@@ -1,0 +1,22 @@
+<svg width="55" height="57" viewBox="0 0 55 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="52.494" cy="10.9893" r="2.31106" fill="#21BF64"/>
+<ellipse cx="5.28235" cy="6.03699" rx="3.30151" ry="3.30151" fill="#21BF64"/>
+<ellipse cx="1.65076" cy="42.0237" rx="1.65076" ry="1.65076" fill="#21BF64"/>
+<ellipse cx="17.4979" cy="55.2293" rx="0.990454" ry="0.990454" fill="#21BF64"/>
+<ellipse cx="47.8719" cy="49.947" rx="0.990454" ry="0.990454" fill="#21BF64"/>
+<ellipse cx="30.0437" cy="0.990454" rx="0.990454" ry="0.990454" fill="#21BF64"/>
+<ellipse cx="50.1829" cy="35.7508" rx="0.660302" ry="0.660303" fill="#21BF64"/>
+<circle cx="26.6485" cy="27.6485" r="21.6485" fill="url(#paint0_linear_6_3360)"/>
+<g clip-path="url(#clip0_6_3360)">
+<path d="M26.8855 17.981C21.4182 17.981 16.9809 22.4182 16.9809 27.8855C16.9809 33.3528 21.4182 37.79 26.8855 37.79C32.3528 37.79 36.79 33.3528 36.79 27.8855C36.79 22.4182 32.3528 17.981 26.8855 17.981ZM24.9046 32.8378L19.9523 27.8855L21.3488 26.489L24.9046 30.0348L32.4221 22.5172L33.8186 23.9237L24.9046 32.8378Z" fill="white"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_6_3360" x1="5" y1="6" x2="48.297" y2="49.297" gradientUnits="userSpaceOnUse">
+<stop stop-color="#029641"/>
+<stop offset="1" stop-color="#21BF64"/>
+</linearGradient>
+<clipPath id="clip0_6_3360">
+<rect width="23.7709" height="23.7709" fill="white" transform="translate(15 16)"/>
+</clipPath>
+</defs>
+</svg>

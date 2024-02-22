@@ -49,7 +49,7 @@ export default function SignIn({navigation}) {
   });
   const handlePress = values => {
     // Handle button press action
-    console.log('Button pressed', values);
+    navigation?.replace('Main');
   };
   const handleChangeContinue = () => {
     setContinueWithPhoneNumber(!continueWithPhoneNumber);
