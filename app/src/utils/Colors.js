@@ -1,6 +1,9 @@
 export const lightGrey = '#F5F5F5';
 export const borderGrey = '#B9B9B9';
 export const white = '#FFFFFF';
+export const darkConcreteGrey = '#6B6B6B';
+export const concreteGrey = '#A7A7A7';
+export const lightBlazeGrey = '#D2D2D2';
 export const black = '#000000';
 export const purple = '#585CF1';
 export const blazeWhite = '#E7E7E7';

@@ -1,4 +1,11 @@
-import {StyleSheet, StatusBar, Text, FlatList, View} from 'react-native';
+import {
+  StyleSheet,
+  StatusBar,
+  Text,
+  FlatList,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import Headers from '../../components/Headers';
 
@@ -17,7 +24,7 @@ import {
 
 import PaymentStatus from '../../assets/svg/PaymentNotification.svg';
 
-export default function Notifications() {
+export default function Notifications({navigation}) {
   const data = [
     {
       phoneNumber: '+112089908760',
@@ -45,7 +52,8 @@ export default function Notifications() {
   ];
 
   const renderItem = ({item}) => (
-    <View
+    <TouchableOpacity
+      onPress={() => navigation.navigate('NumberBuyDetail')}
       style={{
         borderWidth: 1,
         marginHorizontal: wp(5),
@@ -85,7 +93,7 @@ export default function Notifications() {
 
         <Text style={styles.headingTextBlackDesc}>{item.expiryDate}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
   return (
     <View style={styles.container}>
@@ -95,7 +103,12 @@ export default function Notifications() {
         barStyle="dark-content" // You can set the StatusBar text color to dark or light
       />
       <View style={{marginTop: hp(5)}}>
-        <Headers showBackIcon={true} showText={true} text={'Search Results'} />
+        <Headers
+          onPress={() => navigation?.goBack()}
+          showBackIcon={true}
+          showText={true}
+          text={'Search Results'}
+        />
       </View>
 
       <View style={{flex: 1, marginTop: hp(3)}}>
