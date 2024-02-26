@@ -6,6 +6,7 @@ export const concreteGrey = '#A7A7A7';
 export const lightBlazeGrey = '#D2D2D2';
 export const black = '#000000';
 export const purple = '#585CF1';
+export const blazePurple = '#E8E9FF';
 export const blazeWhite = '#E7E7E7';
 export const darkGrey = '#767676';
 export const offWhite = '#EEEEEE';

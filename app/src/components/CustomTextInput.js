@@ -16,6 +16,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import {lightGrey, darkGrey, white, purple} from '../utils/Colors';
+import {appImages} from '../utils';
 
 const CustomTextInput = props => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -34,7 +35,7 @@ const CustomTextInput = props => {
         borderRadius: wp(3),
         borderWidth: 1,
         alignItems: 'center',
-        height: hp(6.5),
+        height: props.height === null ? hp(6.5) : props.height,
       }}>
       {props?.left && props.leftName === 'Mail' && (
         <View style={{marginLeft: wp(3)}}>

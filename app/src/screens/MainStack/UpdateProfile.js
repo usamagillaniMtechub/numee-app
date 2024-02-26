@@ -1,4 +1,11 @@
-import {ScrollView, StyleSheet, StatusBar, Text, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  StatusBar,
+  Text,
+  View,
+  Image,
+} from 'react-native';
 import React, {useState} from 'react';
 import {purple, white} from '../../utils/Colors';
 
@@ -10,8 +17,13 @@ import Headers from '../../components/Headers';
 import CustomButton from '../../components/CustomButton';
 import CustomTextInputHeader from '../../components/CustomTextInputHeader';
 
+import user from '../../components/CustomTextInputHeader';
+
+import UserInactive from '../../../src/assets/svg/UserActive.svg';
+
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import CustomImageModal from '../../components/CustomImageModal';
+import CustomSnackbar from '../../components/CustomSnackBar';
 
 export default function UpdateProfile({navigation}) {
   const [openModel, setOpenModel] = useState(false);
@@ -40,6 +52,25 @@ export default function UpdateProfile({navigation}) {
 
   const [modalVisible, setModalVisible] = useState(false);
 
+  const handleUpdatePasswordShow = async value => {
+    // Perform the password update logic here
+    // For example, you can make an API request to update the password
+
+    // Assuming the update was successful
+    setSnackbarVisible(true);
+
+    // Automatically hide the Snackbar after 3 seconds
+    setTimeout(() => {
+      setSnackbarVisible(false);
+      navigation.goBack();
+      // navigation.navigate("SignIn")
+    }, 3000);
+  };
+
+  const dismissSnackbar = () => {
+    setSnackbarVisible(false);
+  };
+
   const handleCancel = () => {
     setModalVisible(false);
     // Handle cancel action here
@@ -59,7 +90,7 @@ export default function UpdateProfile({navigation}) {
         setImageInfo(response.assets[0]);
         setUrl('');
       }
-      ref_RBSheetCamera.current.close();
+      setModalVisible(false);
     });
   };
 
@@ -74,7 +105,7 @@ export default function UpdateProfile({navigation}) {
 
       console.log('response', imageUri);
 
-      ref_RBSheetCamera.current.close();
+      setModalVisible(false);
     });
   };
 
@@ -104,11 +135,41 @@ export default function UpdateProfile({navigation}) {
             width: wp(18),
             overflow: 'hidden',
             borderRadius: wp(18) / 2,
-            borderWidth: 1,
-          }}></View>
+            borderWidth: 0.3,
+            borderColor: purple,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          {url !== '' ? (
+            <Image
+              style={{
+                flex: 1,
+                width: '100%',
+                height: '100%',
+                borderRadius: wp(25) / 2, // Half of the width (25/2)
+                resizeMode: 'contain',
+              }}
+              source={{uri: url}}
+            />
+          ) : imageInfo !== null ? (
+            <Image
+              style={{
+                flex: 1,
+                width: '100%',
+                height: '100%',
+                borderRadius: wp(25) / 2, // Half of the width (25/2)
+                resizeMode: 'contain',
+              }}
+              source={{uri: imageInfo.uri}}
+            />
+          ) : (
+            <UserInactive width={30} height={30} />
+          )}
+        </View>
 
         <View style={{marginTop: hp(1.5), height: hp(4)}}>
           <CustomButton
+            onPress={() => setModalVisible(true)}
             textStyle={styles.text}
             buttonStyle={styles.button}
             text={'Change Image'}
@@ -133,21 +194,29 @@ export default function UpdateProfile({navigation}) {
 
       <View style={{marginTop: hp(23), marginHorizontal: wp(5)}}>
         <CustomButton
-          onPress={() => setModalVisible(true)}
+          onPress={() => handleUpdatePasswordShow()}
           text={'Update Profile'}
         />
       </View>
 
       <CustomImageModal
         visible={modalVisible}
+        onPressCamera={() => takePhotoFromCamera()}
+        onPressGallery={() => choosePhotoFromLibrary()}
         onRequestClose={() => setModalVisible(false)}
         //imageSource={require('./your-image-path.png')} // Provide path to your image here
-        headerText="Modal Header"
+        headerText="Select an Option"
         bodyText="This is the body of the modal. It can contain multiple lines of text."
         onCancel={handleCancel}
         onConfirm={handleConfirm}
         cancelText="Cancel"
         doneText="Yes"
+      />
+
+      <CustomSnackbar
+        message={'Profile updated successfully!'}
+        onDismiss={dismissSnackbar} // Make sure this function is defined
+        visible={snackbarVisible}
       />
     </ScrollView>
   );

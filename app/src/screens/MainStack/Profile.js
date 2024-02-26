@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   black,
   blazeWhite,
@@ -29,8 +29,44 @@ import Contact from '../../assets/svg/Contact.svg';
 import File from '../../assets/svg/File.svg';
 import LogOut from '../../assets/svg/LogOutGrey.svg';
 import DeleteGrey from '../../assets/svg/DeleteGrey.svg';
+import CustomModal from '../../components/CustomModal';
+import {appImages} from '../../utils';
 
 export default function Profile({navigation}) {
+  const [modalVisibleLogOut, setModalVisibleLogOut] = useState(false);
+  const [modalVisibleDeleteAccount, setModalVisibleDeleteAccount] =
+    useState(false);
+
+  const handleCancel = () => {
+    setModalVisibleLogOut(false);
+    // Handle cancel action here
+  };
+
+  const handleConfirm = () => {
+    setModalVisibleLogOut(false);
+    // Handle confirm action here
+  };
+
+  const openLogout = () => {
+    setModalVisibleLogOut(true);
+    // Handle confirm action here
+  };
+
+  const handleCancelDelete = () => {
+    setModalVisibleDeleteAccount(false);
+    // Handle cancel action here
+  };
+
+  const handleConfirmDelete = () => {
+    setModalVisibleDeleteAccount(false);
+    // Handle confirm action here
+  };
+
+  const openLogoutDelete = () => {
+    setModalVisibleDeleteAccount(true);
+    // Handle confirm action here
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor={white} />
@@ -117,6 +153,7 @@ export default function Profile({navigation}) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        onPress={() => navigation?.navigate('ChangePassword')}
         style={{
           flexDirection: 'row',
           height: hp(5),
@@ -149,6 +186,7 @@ export default function Profile({navigation}) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        onPress={() => navigation.navigate('ContactUs')}
         style={{
           flexDirection: 'row',
           height: hp(5),
@@ -181,6 +219,7 @@ export default function Profile({navigation}) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        onPress={() => navigation.navigate('PrivacyPolicy')}
         style={{
           flexDirection: 'row',
           height: hp(5),
@@ -213,6 +252,7 @@ export default function Profile({navigation}) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        onPress={() => navigation.navigate('TermsAndCondition')}
         style={{
           flexDirection: 'row',
           height: hp(5),
@@ -245,6 +285,7 @@ export default function Profile({navigation}) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        onPress={() => openLogout()}
         style={{
           flexDirection: 'row',
           height: hp(5),
@@ -277,6 +318,7 @@ export default function Profile({navigation}) {
       </TouchableOpacity>
 
       <TouchableOpacity
+        onPress={() => openLogoutDelete()}
         style={{
           flexDirection: 'row',
           height: hp(5),
@@ -308,6 +350,30 @@ export default function Profile({navigation}) {
           <Arrow width={18} height={18} />
         </View>
       </TouchableOpacity>
+
+      <CustomModal
+        visible={modalVisibleLogOut}
+        onClose={() => setModalVisible(false)}
+        imageSource={appImages.logOut} // Provide path to your image here
+        headerText="Logout?"
+        bodyText="Are you sure you want to logout?"
+        cancelText={'Cancel'}
+        doneText={'Yes, Logout'}
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+      />
+
+      <CustomModal
+        visible={modalVisibleDeleteAccount}
+        onClose={() => setModalVisibleDeleteAccount(false)}
+        imageSource={appImages.delete} // Provide path to your image here
+        headerText="Delete Account?"
+        bodyText="Deleting your account removes all data. Email nummy@gmail.com within 90 days with your username, email, full name, and any additional info to retrieve."
+        cancelText={'Cancel'}
+        doneText={'Yes, Delete'}
+        onCancel={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+      />
     </View>
   );
 }

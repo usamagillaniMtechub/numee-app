@@ -7,19 +7,24 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import {purple, white} from '../utils/Colors';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import {black, blazePurple, purple, white} from '../utils/Colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Camera from '../../src/assets/svg/Camera.svg';
+import Gallery from '../../src/assets/svg/Gallery.svg';
+
+import Feather from 'react-native-vector-icons/Feather';
 
 const CustomImageModal = ({
   visible,
   onRequestClose,
-  imageSource,
   headerText,
-  bodyText,
   onCancel,
-  onConfirm,
-  cancelText,
-  doneText,
+  onPressCamera,
+  onPressGallery,
 }) => {
   return (
     <Modal
@@ -32,7 +37,75 @@ const CustomImageModal = ({
           <View style={styles.headerRow}>
             <Text style={styles.headerText}>{headerText}</Text>
             <TouchableOpacity onPress={onCancel}>
-              <Ionicons name="close-circle" size={25} color={purple} />
+              <Ionicons name="close" size={25} color={black} />
+            </TouchableOpacity>
+          </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              height: hp(15),
+              width: wp(70),
+              marginHorizontal: wp(3),
+            }}>
+            <TouchableOpacity
+              onPress={onPressCamera}
+              style={{
+                flexDirection: 'row',
+                overflow: 'hidden',
+                borderRadius: wp(3),
+                width: wp(33),
+                marginTop: hp(3),
+                backgroundColor: blazePurple,
+                height: hp(14),
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'space-evenly',
+                  alignItems: 'center',
+                }}>
+                <Camera width={28} height={28} />
+                <Text
+                  style={[
+                    styles.headerText,
+
+                    {color: purple, fontSize: hp(2.0), fontWeight: '500'},
+                  ]}>
+                  Camera
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={onPressGallery}
+              style={{
+                flexDirection: 'row',
+                overflow: 'hidden',
+                borderRadius: wp(3),
+                width: wp(33),
+                marginTop: hp(3),
+                backgroundColor: blazePurple,
+                height: hp(14),
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'space-evenly',
+                  alignItems: 'center',
+                }}>
+                <Gallery width={23} height={23} />
+                <Text
+                  style={[
+                    styles.headerText,
+
+                    {color: purple, fontSize: hp(2.0), fontWeight: '500'},
+                  ]}>
+                  Gallery
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -68,7 +141,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 16,
     color: 'black',
     fontWeight: 'bold',
     textAlign: 'center',

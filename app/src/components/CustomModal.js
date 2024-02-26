@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 80,
-    height: 80,
+    width: 38,
+    height: 38,
     resizeMode: 'cover',
   },
   header: {

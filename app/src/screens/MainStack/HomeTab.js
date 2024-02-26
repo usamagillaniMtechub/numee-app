@@ -1,12 +1,15 @@
 import {
   StyleSheet,
   Text,
+  Image,
+  TextInput,
   TouchableOpacity,
   FlatList,
   StatusBar,
+  ActivityIndicator,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   black,
   blazeWhite,
@@ -24,33 +27,51 @@ import Search from '../../assets/svg/Search.svg';
 
 import Notifications from '../../assets/svg/Notifications.svg';
 
+import Feater from 'react-native-vector-icons/Feather';
+
+import Entypo from 'react-native-vector-icons/Entypo';
+
 export default function HomeTab({navigation}) {
-  const data = [
-    {
-      phoneNumber: '+112089908760',
-      phoneNumberDesc: '(Local)',
-      countryName: 'Country Name',
-      countryNameDesc: 'United States (US)',
-      expiryDate: '14/02/2024',
-    },
-    {
-      phoneNumber: '+112089908760',
-      phoneNumberDesc: '(Local)',
-      countryName: 'Country Name',
-      countryNameDesc: 'United States (US)',
-      expiryDate: '14/02/2024',
-    },
-    {
-      phoneNumber: '+112089908760',
-      phoneNumberDesc: '(Local)',
-      countryName: 'Country Name',
-      countryNameDesc: 'United States (US)',
-      expiryDate: '14/02/2024',
-    },
+  const [countries, setCountries] = useState([]);
 
-    // Add more data objects as needed
-  ];
+  const [searchResult, setSearchResult] = useState('');
 
+  const [onFocus, setOnFocus] = useState(false);
+
+  const [page, setPage] = useState(1);
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, [page]); // Fetch data whenever the page changes
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://restcountries.com/v3.1/all?page=${page}`,
+      );
+      const data = await response.json();
+
+      if (searchResult !== '') {
+        console.log('DONT GET');
+      } else {
+        setCountries(prevCountries => [...prevCountries, ...data]);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    setLoading(false);
+  };
+
+  const setItsSearchResult = text => {
+    setSearchResult(text);
+    if (text === '') {
+      // Reset countries when the search text is empty
+      setCountries([]);
+    }
+  };
   const renderItem = ({item}) => (
     <View
       style={{
@@ -94,6 +115,40 @@ export default function HomeTab({navigation}) {
       </View>
     </View>
   );
+
+  const filteredCountries = countries.filter(country =>
+    country.name.common.toLowerCase().includes(searchResult.toLowerCase()),
+  );
+
+  const handleEndReached = () => {
+    if (searchResult === '') {
+      setPage(prevPage => prevPage + 1); // Increment page number to fetch the next page of data
+    }
+  };
+
+  const renderFooter = () => {
+    return loading ? (
+      <ActivityIndicator style={styles.loader} size="large" color={purple} />
+    ) : null;
+  };
+
+  const renderCountryItem = ({item}) => {
+    return (
+      <View style={styles.countryItem}>
+        <Image style={styles.flag} source={{uri: item.flags?.png}} />
+
+        <Text ellipsizeMode="tail" numberOfLines={0} style={styles.countryName}>
+          {item.name.common.length > 25
+            ? `${item.name.common.substring(0, 15)}...`
+            : item.name.common}
+        </Text>
+
+        <Text style={styles.countryName}>{'  '}</Text>
+
+        <Text style={styles.shortName}>{`(${item.cca2})`}</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor={purple} />
@@ -207,6 +262,36 @@ export default function HomeTab({navigation}) {
         </Text>
       </View>
 
+      <View
+        style={
+          onFocus === true ? styles.textInputActive : styles.textInputInActive
+        }>
+        <Feater
+          name="search"
+          style={{marginLeft: wp(3)}}
+          size={20}
+          color={darkGrey}
+        />
+
+        <TextInput
+          onFocus={() => setOnFocus(true)}
+          onBlur={() => setOnFocus(false)}
+          value={searchResult}
+          onChangeText={text => setItsSearchResult(text)}
+          style={{marginTop: hp(-0.5), flex: 1}}
+          placeholder="Search here"
+        />
+
+        <TouchableOpacity onPress={() => setSearchResult('')}>
+          <Entypo
+            name="cross"
+            style={{marginRight: wp(3)}}
+            size={20}
+            color={purple}
+          />
+        </TouchableOpacity>
+      </View>
+
       {/* <View
         style={{
           borderWidth: 1,
@@ -250,11 +335,20 @@ export default function HomeTab({navigation}) {
       </View> */}
 
       <View style={{flex: 1, marginTop: hp(3)}}>
-        <FlatList
+        {/* <FlatList
           showsVerticalScrollIndicator={false}
           data={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
+        /> */}
+
+        <FlatList
+          data={filteredCountries}
+          renderItem={renderCountryItem}
+          keyExtractor={(item, index) => index.toString()}
+          //onEndReached={handleEndReached}
+          //onEndReachedThreshold={0.05} // Trigger when 10% from the bottom
+          //ListFooterComponent={renderFooter}
         />
       </View>
     </View>
@@ -264,7 +358,6 @@ export default function HomeTab({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   cardContainer: {
     backgroundColor: purple,
@@ -346,5 +439,59 @@ const styles = StyleSheet.create({
     color: darkGrey,
     //fontWeight: 'bold',
     textAlign: 'center',
+  },
+
+  countryItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: wp(8),
+    padding: 10,
+    backgroundColor: white,
+    borderRadius: wp(2.1),
+    borderWidth: 0.5,
+    borderColor: darkGrey,
+    marginTop: hp(3),
+  },
+  flag: {
+    width: 50,
+    height: 30,
+    marginRight: 10,
+  },
+  countryInfo: {
+    flex: 1,
+  },
+  countryName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  shortName: {
+    fontSize: 14,
+    color: '#666',
+  },
+  textInputActive: {
+    flexDirection: 'row',
+    backgroundColor: white,
+    borderWidth: 1,
+    borderColor: purple,
+    marginTop: hp(5),
+    overflow: 'hidden',
+    alignItems: 'center',
+    height: hp(5.7),
+    marginHorizontal: wp(5),
+    borderRadius: wp(3),
+  },
+  textInputInActive: {
+    flexDirection: 'row',
+    backgroundColor: lightGrey,
+    marginTop: hp(5),
+    overflow: 'hidden',
+    alignItems: 'center',
+    height: hp(5.7),
+    marginHorizontal: wp(5),
+    borderRadius: wp(3),
+  },
+  loader: {
+    marginTop: 10,
+    alignSelf: 'center',
   },
 });

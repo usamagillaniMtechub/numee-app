@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {appImages} from '../../utils';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
@@ -22,9 +22,23 @@ import {
 import CustomTextInput from '../../components/CustomTextInput';
 import {darkGrey, lightGrey, offWhite, purple, white} from '../../utils/Colors';
 import CustomButton from '../../components/CustomButton';
+import {useGetAllCountriesQuery} from '../../api/apiSlice';
 
 export default function SignIn({navigation}) {
   const [continueWithPhoneNumber, setContinueWithPhoneNumber] = useState(false);
+
+  const {
+    data: countries,
+    error: countriesError,
+    isLoading: countriesLoading,
+    refetch: refetchCountries,
+  } = useGetAllCountriesQuery({skip: true}); // Fetch all countries using RTK Query
+
+  /*   useEffect(() => {
+    if (countries) {
+      console.log('Countries:', countries);
+    }
+  }, [countries]); */
 
   const validationSchema = yup.object().shape({
     email: yup
@@ -51,6 +65,13 @@ export default function SignIn({navigation}) {
     // Handle button press action
     navigation?.replace('Main');
   };
+
+  /* const handlePress = async values => {
+    //navigation.replace('Main');
+    //if (!continueWithPhoneNumber) {
+    await refetchCountries(); // Fetch countries only if continuing with email
+    //}
+  }; */
   const handleChangeContinue = () => {
     setContinueWithPhoneNumber(!continueWithPhoneNumber);
   };

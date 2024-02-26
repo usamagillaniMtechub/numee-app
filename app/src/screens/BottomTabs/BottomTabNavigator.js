@@ -48,6 +48,7 @@ const BottomTabNavigation = () => {
           borderTopLeftRadius: 18,
           borderTopRightRadius: 18,
           overflow: 'hidden',
+          tabBarHideOnKeyboard: true,
         },
       }}>
       <Bottom.Screen

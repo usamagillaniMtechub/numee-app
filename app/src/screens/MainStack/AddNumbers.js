@@ -28,6 +28,8 @@ export default function AddNumbers({navigation}) {
 
   const [isFocus, setIsFocus] = useState(false);
 
+  const [isFocusArea, setIsFocusArea] = useState(false);
+
   const [isFocusNumberType, setIsFocusNumberType] = useState(false);
 
   const [isFocusCapabilities, setIsFocusCapabilities] = useState(false);
@@ -92,13 +94,65 @@ export default function AddNumbers({navigation}) {
           maxHeight={200}
           labelField="label"
           valueField="value"
-          placeholder={'Select Category'}
+          placeholder={'Country'}
           searchPlaceholder="Search..."
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={item => {
             setCategoryId(item.value);
             setIsFocus(false);
+          }}
+          renderRightIcon={() => (
+            <AntDesign
+              style={styles.icon}
+              color={isFocus ? purple : darkGrey}
+              name="down"
+              size={15}
+            />
+          )}
+        />
+      </View>
+
+      <View style={{marginHorizontal: wp(8)}}>
+        <Dropdown
+          style={
+            isFocusArea
+              ? styles.textInputSelectedCategory
+              : styles.textInputCategoryNonSelected
+          }
+          containerStyle={{
+            marginTop: 3,
+            alignSelf: 'center',
+            borderRadius: wp(3),
+            marginRight: wp(15),
+            //width: '100%',
+          }}
+          // dropdownPosition="top"
+          // mode="modal"
+          placeholderStyle={{
+            color: '#121420',
+            //   fontWeight: '400',
+            fontFamily: 'Inter',
+            fontSize: hp(1.8),
+          }}
+          iconStyle={isFocus ? styles.iconStyle : styles.iconStyleInactive}
+          itemTextStyle={{color: '#000000'}}
+          selectedTextStyle={{fontSize: 16, color: '#000000'}}
+          // inputSearchStyle={styles.inputSearchStyle}
+          // iconStyle={styles.iconStyle}
+          value={category}
+          data={Condition}
+          search={true}
+          maxHeight={200}
+          labelField="label"
+          valueField="value"
+          placeholder={'Area'}
+          searchPlaceholder="Search..."
+          onFocus={() => setIsFocusArea(true)}
+          onBlur={() => setIsFocusArea(false)}
+          onChange={item => {
+            setCategoryId(item.value);
+            setIsFocusArea(false);
           }}
           renderRightIcon={() => (
             <AntDesign
@@ -236,7 +290,7 @@ export default function AddNumbers({navigation}) {
       <View
         style={{
           flex: 1,
-          marginTop: hp(12),
+          marginTop: hp(8),
           marginHorizontal: wp(5),
           justifyContent: 'center',
         }}>
